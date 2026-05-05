@@ -1,0 +1,1480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — New World Student Center</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --amber:#D4820A;--amber-h:#E8930A;--amber-pale:#FFF8EC;--amber-mid:#FDECC4;
+  --red:#B92B1E;--red-pale:#FEF2F0;
+  --black:#080808;--dark:#111118;--dark2:#1C1C26;--dark3:#242433;
+  --ink:#1A1A2E;--mid:#64647A;--muted:#9898B0;
+  --border:#E4E4F0;--border2:#D0D0E8;
+  --bg:#F6F6FC;--white:#FFFFFF;
+  --green:#15803D;--green-pale:#F0FDF4;--green-mid:#BBF7D0;
+  --blue:#1D4ED8;--blue-pale:#EFF6FF;
+  --purple:#7C3AED;--purple-pale:#F5F3FF;
+  --font:'Plus Jakarta Sans',sans-serif;
+  --r1:6px;--r2:10px;--r3:16px;--r4:22px;
+  --sh1:0 1px 4px rgba(0,0,0,.06);--sh2:0 4px 16px rgba(0,0,0,.09);--sh3:0 8px 32px rgba(0,0,0,.12);
+  --sidebar-w:260px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);display:flex;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sidebar-w);height:100vh;
+  background:var(--dark);
+  display:flex;flex-direction:column;
+  flex-shrink:0;position:relative;z-index:10;
+  overflow-y:auto;
+}
+.sb-logo{
+  padding:22px 20px 18px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;gap:12px;
+}
+.sb-mark{
+  width:38px;height:38px;
+  background:linear-gradient(145deg,var(--amber-h),var(--red));
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:900;color:#fff;flex-shrink:0;
+}
+.sb-name{font-size:13px;font-weight:700;color:#fff;line-height:1.3;}
+.sb-sub{font-size:10px;color:rgba(255,255,255,.35);font-weight:400;margin-top:1px;}
+.sb-section{padding:18px 14px 6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.28);}
+.sb-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;margin:2px 8px;
+  border-radius:var(--r2);
+  font-size:13px;font-weight:500;color:rgba(255,255,255,.55);
+  cursor:pointer;transition:all .18s;
+}
+.sb-item:hover{background:rgba(255,255,255,.07);color:rgba(255,255,255,.9);}
+.sb-item.active{background:rgba(212,130,10,.18);color:var(--amber-h);}
+.sb-item .icon{font-size:16px;flex-shrink:0;}
+.sb-item .badge{
+  margin-left:auto;padding:2px 8px;border-radius:100px;
+  font-size:10px;font-weight:700;background:var(--amber);color:#fff;
+}
+.sb-divider{height:1px;background:rgba(255,255,255,.06);margin:12px 14px;}
+.sb-social{padding:14px;border-top:1px solid rgba(255,255,255,.07);margin-top:auto;}
+.sb-social-title{font-size:10px;font-weight:700;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.sb-social-links{display:flex;flex-direction:column;gap:7px;}
+.ssl{
+  display:flex;align-items:center;gap:9px;
+  padding:9px 12px;border-radius:var(--r2);
+  background:rgba(255,255,255,.05);
+  font-size:12px;font-weight:600;color:rgba(255,255,255,.6);
+  text-decoration:none;cursor:pointer;transition:all .18s;
+}
+.ssl:hover{background:rgba(255,255,255,.1);color:#fff;}
+.ssl-icon{font-size:16px;}
+.ssl-count{margin-left:auto;font-size:11px;color:rgba(255,255,255,.35);}
+
+/* ── MAIN ── */
+.main{flex:1;height:100vh;overflow-y:auto;display:flex;flex-direction:column;}
+
+/* ── TOPBAR ── */
+.topbar{
+  background:var(--white);border-bottom:1px solid var(--border);
+  padding:0 28px;height:62px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:5;flex-shrink:0;
+}
+.topbar-left{display:flex;align-items:center;gap:14px;}
+.page-title{font-size:18px;font-weight:800;color:var(--ink);}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.tb-search{
+  padding:9px 14px;border:1.5px solid var(--border2);border-radius:var(--r2);
+  font-size:13px;background:var(--bg);color:var(--ink);
+  outline:none;font-family:var(--font);width:220px;transition:border-color .2s;
+}
+.tb-search:focus{border-color:var(--amber);}
+.tb-btn{
+  padding:9px 16px;border:1.5px solid var(--border2);border-radius:var(--r2);
+  font-size:13px;font-weight:600;background:var(--white);color:var(--mid);
+  cursor:pointer;transition:all .2s;font-family:var(--font);
+  display:flex;align-items:center;gap:6px;
+}
+.tb-btn:hover{border-color:var(--amber);color:var(--amber);}
+.tb-btn-solid{background:var(--amber);border-color:var(--amber);color:#fff;}
+.tb-btn-solid:hover{background:var(--amber-h);border-color:var(--amber-h);color:#fff;}
+.avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--amber),var(--red));
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;font-weight:800;color:#fff;cursor:pointer;
+}
+
+/* ── PAGE CONTENT ── */
+.page{display:none;padding:28px;}
+.page.active{display:block;}
+
+/* ── STAT CARDS ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:24px;}
+.stat-card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--r3);
+  padding:22px 20px;position:relative;overflow:hidden;
+}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.sc-amber::before{background:linear-gradient(90deg,var(--amber),var(--amber-h));}
+.sc-green::before{background:linear-gradient(90deg,#22C55E,#16A34A);}
+.sc-blue::before{background:linear-gradient(90deg,#60A5FA,#2563EB);}
+.sc-red::before{background:linear-gradient(90deg,#F87171,#DC2626);}
+.sc-num{font-size:34px;font-weight:900;color:var(--ink);letter-spacing:-.02em;}
+.sc-lbl{font-size:13px;color:var(--muted);margin-top:4px;}
+.sc-icon{position:absolute;bottom:14px;right:16px;font-size:28px;opacity:.15;}
+.sc-trend{font-size:12px;font-weight:600;margin-top:10px;display:flex;align-items:center;gap:4px;}
+.sc-trend.up{color:var(--green);}
+.sc-trend.down{color:var(--red);}
+
+/* ── TABLE ── */
+.table-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden;margin-bottom:24px;}
+.tc-header{
+  padding:18px 22px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+}
+.tc-title{font-size:15px;font-weight:700;color:var(--ink);}
+.tc-actions{display:flex;gap:8px;align-items:center;}
+.filter-btn{
+  padding:7px 13px;border:1.5px solid var(--border2);border-radius:var(--r1);
+  font-size:12px;font-weight:600;color:var(--mid);background:none;cursor:pointer;
+  font-family:var(--font);transition:all .18s;
+}
+.filter-btn:hover,.filter-btn.active{border-color:var(--amber);color:var(--amber);background:var(--amber-pale);}
+.search-inline{
+  padding:8px 12px;border:1.5px solid var(--border2);border-radius:var(--r1);
+  font-size:13px;color:var(--ink);background:var(--bg);outline:none;
+  font-family:var(--font);transition:border-color .2s;width:180px;
+}
+.search-inline:focus{border-color:var(--amber);}
+table{width:100%;border-collapse:collapse;}
+thead tr{background:var(--bg);}
+th{padding:11px 16px;text-align:left;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);white-space:nowrap;}
+td{padding:13px 16px;font-size:14px;border-top:1px solid var(--border);vertical-align:middle;}
+tr:hover td{background:#FAFAFD;}
+.td-name{font-weight:700;color:var(--ink);}
+.td-email{color:var(--mid);}
+.td-phone{font-size:13px;color:var(--mid);}
+/* level badges */
+.badge{display:inline-block;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:800;}
+.b-a1{background:#DCFCE7;color:#166534;}
+.b-a2{background:#FEF9C3;color:#854D0E;}
+.b-b1{background:#DBEAFE;color:#1E40AF;}
+.b-b2{background:#F3E8FF;color:#6B21A8;}
+.b-unknown{background:var(--border);color:var(--muted);}
+/* status badges */
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:100px;font-size:11px;font-weight:700;}
+.s-new{background:#FFF7ED;color:#C2410C;}
+.s-contacted{background:#DBEAFE;color:#1D4ED8;}
+.s-confirmed{background:#DCFCE7;color:#15803D;}
+.s-cancelled{background:#FEF2F2;color:#991B1B;}
+.s-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+/* schedule */
+.sched-badge{font-size:12px;color:var(--mid);display:flex;align-items:center;gap:4px;}
+/* actions */
+.row-actions{display:flex;gap:6px;}
+.ra-btn{
+  padding:5px 10px;border-radius:var(--r1);border:1.5px solid var(--border2);
+  font-size:11px;font-weight:700;cursor:pointer;transition:all .18s;
+  background:none;font-family:var(--font);color:var(--mid);
+}
+.ra-btn:hover{border-color:var(--amber);color:var(--amber);}
+.ra-btn.danger:hover{border-color:var(--red);color:var(--red);}
+/* pagination */
+.pagination{padding:14px 22px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.pag-info{font-size:13px;color:var(--muted);}
+.pag-btns{display:flex;gap:6px;}
+.pag-btn{
+  padding:6px 12px;border:1.5px solid var(--border2);border-radius:var(--r1);
+  font-size:12px;font-weight:600;cursor:pointer;background:none;font-family:var(--font);color:var(--mid);transition:all .18s;
+}
+.pag-btn:hover,.pag-btn.active{border-color:var(--amber);color:var(--amber);background:var(--amber-pale);}
+
+/* ── GRID 2 ── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px;}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:24px;}
+
+/* ── MINI CHART (CSS only bars) ── */
+.chart-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r3);padding:22px;}
+.chart-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:18px;}
+.bar-chart{display:flex;align-items:flex-end;gap:10px;height:120px;}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.bar-fill{width:100%;border-radius:4px 4px 0 0;transition:height .5s;}
+.bar-lbl{font-size:10px;color:var(--muted);font-weight:600;}
+.bar-val{font-size:11px;font-weight:700;color:var(--ink);}
+
+/* level donut (fake css ring) */
+.level-stats{display:flex;flex-direction:column;gap:10px;margin-top:8px;}
+.lstat-row{display:flex;align-items:center;gap:10px;}
+.lstat-label{font-size:13px;font-weight:600;color:var(--ink);width:30px;}
+.lstat-bar{flex:1;height:8px;background:var(--border);border-radius:100px;overflow:hidden;}
+.lstat-fill{height:100%;border-radius:100px;}
+.lstat-count{font-size:12px;font-weight:700;color:var(--mid);min-width:24px;text-align:right;}
+
+/* ── DETAIL MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;
+  display:none;align-items:center;justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--white);border-radius:var(--r4);padding:32px;
+  width:540px;max-width:95vw;max-height:90vh;overflow-y:auto;
+  box-shadow:var(--sh3);position:relative;
+}
+.modal-close{
+  position:absolute;top:16px;right:16px;
+  width:30px;height:30px;border-radius:50%;border:none;background:var(--bg);
+  font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:var(--muted);transition:all .18s;
+}
+.modal-close:hover{background:var(--red-pale);color:var(--red);}
+.modal-h{font-size:20px;font-weight:800;margin-bottom:6px;color:var(--ink);}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:22px;}
+.modal-fields{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.mf{display:flex;flex-direction:column;gap:4px;}
+.mf-full{grid-column:1/-1;}
+.mf-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);}
+.mf-val{font-size:14px;font-weight:600;color:var(--ink);}
+.modal-divider{height:1px;background:var(--border);margin:18px 0;}
+.status-select{
+  padding:8px 12px;border:1.5px solid var(--border2);border-radius:var(--r1);
+  font-size:13px;font-family:var(--font);color:var(--ink);background:var(--bg);
+  outline:none;cursor:pointer;transition:border-color .2s;
+}
+.status-select:focus{border-color:var(--amber);}
+.modal-actions{display:flex;gap:10px;margin-top:22px;}
+.ma-btn{
+  flex:1;padding:11px;border-radius:var(--r2);font-size:14px;font-weight:700;
+  cursor:pointer;font-family:var(--font);transition:all .2s;border:1.5px solid transparent;
+}
+.ma-primary{background:var(--amber);color:#fff;}
+.ma-primary:hover{background:var(--amber-h);}
+.ma-ghost{background:none;border-color:var(--border2);color:var(--mid);}
+.ma-ghost:hover{border-color:var(--red);color:var(--red);}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:22px;right:22px;z-index:999;
+  background:var(--white);border:1px solid var(--border);border-radius:var(--r3);
+  padding:14px 18px;box-shadow:var(--sh3);
+  display:flex;align-items:center;gap:12px;
+  transform:translateX(130%);transition:transform .4s cubic-bezier(.34,1.56,.64,1);
+  max-width:290px;
+}
+.toast.show{transform:translateX(0);}
+.toast-icon{font-size:20px;}
+.toast-title{font-size:14px;font-weight:700;color:var(--ink);}
+.toast-sub{font-size:12px;color:var(--muted);}
+
+/* ── SOCIAL PREVIEW CARDS ── */
+.social-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px;}
+.social-card{
+  background:var(--white);border:1px solid var(--border);border-radius:var(--r3);
+  overflow:hidden;
+}
+.sc-top{padding:18px 20px;display:flex;align-items:center;gap:13px;border-bottom:1px solid var(--border);}
+.sc-platform-icon{font-size:26px;}
+.sc-platform-name{font-size:15px;font-weight:700;color:var(--ink);}
+.sc-handle{font-size:12px;color:var(--muted);}
+.sc-stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:14px 20px;gap:10px;}
+.sc-stat{text-align:center;}
+.sc-stat-num{font-size:20px;font-weight:900;color:var(--ink);}
+.sc-stat-lbl{font-size:11px;color:var(--muted);}
+.sc-footer{padding:12px 20px;border-top:1px solid var(--border);display:flex;gap:8px;}
+.sc-link-btn{
+  padding:8px 14px;border:1.5px solid var(--border2);border-radius:var(--r1);
+  font-size:12px;font-weight:700;color:var(--mid);background:none;cursor:pointer;
+  font-family:var(--font);transition:all .18s;text-decoration:none;display:inline-flex;align-items:center;gap:5px;
+}
+.sc-link-btn:hover{border-color:var(--amber);color:var(--amber);}
+.sc-link-btn.primary{background:var(--amber);border-color:var(--amber);color:#fff;}
+.sc-link-btn.primary:hover{background:var(--amber-h);}
+
+/* ── SETTINGS ── */
+.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.setting-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r3);padding:24px;}
+.setting-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.setting-row{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.setting-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);}
+.setting-input{
+  padding:10px 14px;border:1.5px solid var(--border2);border-radius:var(--r1);
+  font-size:14px;color:var(--ink);background:var(--bg);outline:none;
+  font-family:var(--font);transition:border-color .2s;
+}
+.setting-input:focus{border-color:var(--amber);}
+.save-btn{
+  padding:10px 20px;background:var(--amber);border:none;border-radius:var(--r1);
+  font-size:13px;font-weight:700;color:#fff;cursor:pointer;font-family:var(--font);transition:all .2s;
+}
+.save-btn:hover{background:var(--amber-h);}
+/* toggle */
+.toggle-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
+.toggle-row:last-child{border-bottom:none;}
+.toggle-lbl{font-size:14px;color:var(--ink);}
+.toggle-sub{font-size:12px;color:var(--muted);}
+.toggle{position:relative;width:44px;height:24px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{
+  position:absolute;inset:0;background:var(--border2);border-radius:100px;cursor:pointer;transition:.25s;
+}
+.toggle-slider::after{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.25s;}
+.toggle input:checked+.toggle-slider{background:var(--amber);}
+.toggle input:checked+.toggle-slider::after{transform:translateX(20px);}
+
+/* ── EXPORT BTN ── */
+.export-bar{display:flex;gap:10px;align-items:center;margin-bottom:18px;}
+.exp-btn{
+  padding:9px 16px;border:1.5px solid var(--border2);border-radius:var(--r2);
+  font-size:13px;font-weight:600;color:var(--mid);background:var(--white);
+  cursor:pointer;font-family:var(--font);transition:all .18s;display:flex;align-items:center;gap:7px;
+}
+.exp-btn:hover{border-color:var(--amber);color:var(--amber);}
+.exp-btn.solid{background:var(--green);border-color:var(--green);color:#fff;}
+.exp-btn.solid:hover{background:#15803D;}
+
+/* ── EMPTY STATE ── */
+.empty-state{padding:60px;text-align:center;color:var(--muted);}
+.empty-icon{font-size:48px;margin-bottom:12px;}
+.empty-text{font-size:15px;font-weight:600;}
+.empty-sub{font-size:13px;margin-top:4px;}
+
+/* ── RESPONSIVE SIDEBAR ── */
+@media(max-width:900px){
+  .sidebar{position:fixed;left:-260px;transition:left .3s;z-index:50;}
+  .sidebar.open{left:0;}
+  .grid2,.settings-grid{grid-template-columns:1fr;}
+  .stats-row{grid-template-columns:1fr 1fr;}
+  .social-grid{grid-template-columns:1fr;}
+}
+@media(max-width:600px){
+  .stats-row{grid-template-columns:1fr;}
+  .modal-fields{grid-template-columns:1fr;}
+  .page{padding:16px;}
+}
+
+/* ── LOGIN SCREEN ── */
+#login-screen{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--dark);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;
+}
+.login-card{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:24px;
+  padding:44px 48px;
+  width:100%;max-width:420px;
+  box-shadow:0 24px 80px rgba(0,0,0,.5);
+  position:relative;overflow:hidden;
+}
+.login-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--amber-h),var(--red));
+}
+.login-logo{
+  display:flex;align-items:center;gap:13px;margin-bottom:32px;justify-content:center;
+}
+.login-mark{
+  width:52px;height:52px;
+  background:linear-gradient(145deg,var(--amber-h),var(--red));
+  border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:900;color:#fff;
+}
+.login-brand{text-align:left;}
+.login-brand-top{font-size:16px;font-weight:800;color:#fff;}
+.login-brand-bot{font-size:11px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.07em;margin-top:2px;}
+.login-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:6px;text-align:center;}
+.login-sub{font-size:14px;color:rgba(255,255,255,.45);text-align:center;margin-bottom:30px;}
+.login-field{margin-bottom:16px;}
+.login-label{display:block;font-size:12px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px;}
+.login-input{
+  width:100%;padding:13px 16px;
+  background:rgba(255,255,255,.07);
+  border:1.5px solid rgba(255,255,255,.12);
+  border-radius:10px;
+  font-size:15px;color:#fff;
+  font-family:var(--font);outline:none;
+  transition:all .2s;
+}
+.login-input::placeholder{color:rgba(255,255,255,.28);}
+.login-input:focus{border-color:var(--amber-h);background:rgba(255,255,255,.1);}
+.login-input.shake{animation:shake .4s ease;}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.login-err{
+  font-size:12px;color:#FCA5A5;margin-top:6px;display:none;
+  background:rgba(185,43,30,.15);border-radius:6px;padding:8px 12px;
+  border:1px solid rgba(185,43,30,.3);
+}
+.login-err.show{display:block;}
+.login-btn{
+  width:100%;padding:14px;margin-top:8px;
+  background:var(--amber);border:none;border-radius:10px;
+  font-size:15px;font-weight:800;color:#fff;
+  cursor:pointer;font-family:var(--font);
+  transition:all .25s;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.login-btn:hover{background:var(--amber-h);transform:translateY(-1px);box-shadow:0 8px 24px rgba(212,130,10,.4);}
+.login-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
+.login-hint{text-align:center;margin-top:18px;font-size:12px;color:rgba(255,255,255,.25);}
+.login-hint a{color:rgba(255,255,255,.4);text-decoration:none;}
+.login-hint a:hover{color:var(--amber);}
+.login-attempts{
+  font-size:12px;color:rgba(255,255,255,.3);
+  text-align:center;margin-top:10px;min-height:18px;
+}
+/* lockout */
+.lockout-msg{
+  background:rgba(185,43,30,.15);border:1px solid rgba(185,43,30,.3);
+  border-radius:10px;padding:14px 16px;
+  font-size:13px;color:#FCA5A5;text-align:center;margin-top:12px;
+  display:none;
+}
+.lockout-msg.show{display:block;}
+/* app shell hidden during login */
+body.locked .sidebar,body.locked .main{display:none;}
+body.logged-in #login-screen{display:none;}
+/* show password toggle */
+.pw-wrap{position:relative;}
+.pw-eye{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;font-size:18px;color:rgba(255,255,255,.35);
+  transition:color .2s;
+}
+.pw-eye:hover{color:var(--amber);}
+</style>
+</head>
+<body class="locked">
+
+<!-- ══════════════════════════════
+     LOGIN SCREEN
+══════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-mark">NW</div>
+      <div class="login-brand">
+        <div class="login-brand-top">New World Student Center</div>
+        <div class="login-brand-bot">Admin Panel · Fès, Maroc</div>
+      </div>
+    </div>
+    <div class="login-title">Welcome back 👋</div>
+    <div class="login-sub">Enter your credentials to access the dashboard</div>
+
+    <div class="login-field">
+      <label class="login-label">Email Address</label>
+      <input class="login-input" id="l-email" type="email" placeholder="admin@newworld.ma" autocomplete="username" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="login-field">
+      <label class="login-label">Password</label>
+      <div class="pw-wrap">
+        <input class="login-input" id="l-pass" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+        <button class="pw-eye" type="button" onclick="togglePw()" id="pw-eye-btn" aria-label="Show/hide password">👁</button>
+      </div>
+    </div>
+
+    <div class="login-err" id="l-err">Incorrect email or password. Please try again.</div>
+    <div class="lockout-msg" id="l-lockout">Too many failed attempts. Please wait <span id="l-timer">30</span> seconds.</div>
+
+    <button class="login-btn" id="l-btn" onclick="doLogin()">
+      <span id="l-btn-text">🔐 Sign In</span>
+    </button>
+
+    <div class="login-attempts" id="l-attempts"></div>
+    <div class="login-hint">
+      Default password: <a href="#" onclick="return false;" style="letter-spacing:.05em;">nwsc2026</a>
+      &nbsp;·&nbsp; <a href="#" onclick="return false;">Forgot password?</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     SIDEBAR
+══════════════════════════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-mark">NW</div>
+    <div>
+      <div class="sb-name">New World Student Center</div>
+      <div class="sb-sub">Admin Panel v2.0</div>
+    </div>
+  </div>
+
+  <div class="sb-section">Main</div>
+  <div class="sb-item active" onclick="switchPage('dashboard',this)"><span class="icon">📊</span> Dashboard</div>
+  <div class="sb-item" onclick="switchPage('registrations',this)">
+    <span class="icon">📝</span> Registrations
+    <span class="badge" id="sb-count">0</span>
+  </div>
+
+  <div class="sb-section">Management</div>
+  <div class="sb-item" onclick="switchPage('analytics',this)"><span class="icon">📈</span> Analytics</div>
+  <div class="sb-item" onclick="switchPage('social',this)"><span class="icon">🌐</span> Social Media</div>
+
+  <div class="sb-section">System</div>
+  <div class="sb-item" onclick="switchPage('settings',this)"><span class="icon">⚙️</span> Settings</div>
+  <div class="sb-item" onclick="doLogout()" style="color:rgba(255,100,100,.6)"><span class="icon">🚪</span> Logout</div>
+
+  <div class="sb-divider"></div>
+
+  <div class="sb-social">
+    <div class="sb-social-title">School Profiles</div>
+    <div class="sb-social-links">
+      <a class="ssl" href="https://www.facebook.com/share/p/1B4P4KrGLY/" target="_blank">
+        <span class="ssl-icon">📘</span>
+        <span>Facebook Page</span>
+        <span class="ssl-count">21k</span>
+      </a>
+      <a class="ssl" href="https://www.instagram.com/new_worldcenter" target="_blank">
+        <span class="ssl-icon">📷</span>
+        <span>@new_worldcenter</span>
+        <span class="ssl-count">IG</span>
+      </a>
+      <a class="ssl" href="https://wa.me/212697250096" target="_blank">
+        <span class="ssl-icon">💬</span>
+        <span>WhatsApp</span>
+      </a>
+    </div>
+  </div>
+</aside>
+
+<!-- ══════════════════════════════
+     MAIN
+══════════════════════════════ -->
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="tb-btn" id="ham-btn" onclick="toggleSidebar()" style="padding:9px 11px;" aria-label="Menu">☰</button>
+      <div class="page-title" id="page-title">Dashboard</div>
+    </div>
+    <div class="topbar-right">
+      <input class="tb-search" id="globalSearch" placeholder="🔍 Search registrations…" oninput="handleGlobalSearch(this.value)">
+      <button class="tb-btn" onclick="exportCSV()">⬇️ Export CSV</button>
+      <button class="tb-btn tb-btn-solid" onclick="switchPage('registrations',null);showAddModal()">+ Add Student</button>
+      <div class="avatar" title="Admin">A</div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: DASHBOARD ══ -->
+  <div class="page active" id="page-dashboard">
+    <div class="stats-row">
+      <div class="stat-card sc-amber">
+        <div class="sc-num" id="st-total">0</div>
+        <div class="sc-lbl">Total Registrations</div>
+        <div class="sc-trend up" id="st-trend">↑ +3 this week</div>
+        <div class="sc-icon">📝</div>
+      </div>
+      <div class="stat-card sc-green">
+        <div class="sc-num" id="st-confirmed">0</div>
+        <div class="sc-lbl">Confirmed Students</div>
+        <div class="sc-trend up">↑ Active</div>
+        <div class="sc-icon">✅</div>
+      </div>
+      <div class="stat-card sc-blue">
+        <div class="sc-num" id="st-pending">0</div>
+        <div class="sc-lbl">Pending Contact</div>
+        <div class="sc-trend down">⚡ Needs action</div>
+        <div class="sc-icon">⏳</div>
+      </div>
+      <div class="stat-card sc-red">
+        <div class="sc-num" id="st-today">0</div>
+        <div class="sc-lbl">New Today</div>
+        <div class="sc-trend up">🔥 Fresh leads</div>
+        <div class="sc-icon">🆕</div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <!-- Recent registrations mini table -->
+      <div class="table-card">
+        <div class="tc-header">
+          <div class="tc-title">Recent Registrations</div>
+          <button class="filter-btn" onclick="switchPage('registrations',document.querySelector('.sb-item:nth-child(3)'))">View all →</button>
+        </div>
+        <table>
+          <thead><tr><th>Name</th><th>Level</th><th>Status</th></tr></thead>
+          <tbody id="recent-tbody"></tbody>
+        </table>
+      </div>
+      <!-- Level distribution chart -->
+      <div class="chart-card">
+        <div class="chart-title">📊 Students by Level</div>
+        <div class="level-stats" id="level-stats-chart"></div>
+        <div class="chart-title" style="margin-top:20px;">📅 Registrations by Schedule</div>
+        <div class="level-stats" id="sched-stats-chart"></div>
+      </div>
+    </div>
+
+    <!-- Bar chart by month -->
+    <div class="table-card" style="padding:22px;">
+      <div class="chart-title">📆 Registrations Timeline (Last 6 Months)</div>
+      <div class="bar-chart" id="bar-chart" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: REGISTRATIONS ══ -->
+  <div class="page" id="page-registrations">
+    <div class="export-bar">
+      <button class="exp-btn solid" onclick="exportCSV()">⬇️ Export CSV</button>
+      <button class="exp-btn" onclick="exportJSON()">⬇️ Export JSON</button>
+      <button class="exp-btn" onclick="printTable()">🖨️ Print</button>
+      <span style="margin-left:auto;font-size:13px;color:var(--muted)" id="reg-count-info">0 registrations</span>
+    </div>
+    <div class="table-card">
+      <div class="tc-header">
+        <div class="tc-title">All Registrations</div>
+        <div class="tc-actions">
+          <input class="search-inline" id="tableSearch" placeholder="Search…" oninput="filterTable(this.value)">
+          <button class="filter-btn active" data-filter="all" onclick="setFilter('all',this)">All</button>
+          <button class="filter-btn" data-filter="new" onclick="setFilter('new',this)">New</button>
+          <button class="filter-btn" data-filter="contacted" onclick="setFilter('contacted',this)">Contacted</button>
+          <button class="filter-btn" data-filter="confirmed" onclick="setFilter('confirmed',this)">Confirmed</button>
+          <button class="filter-btn" data-filter="cancelled" onclick="setFilter('cancelled',this)">Cancelled</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="checkAll" onchange="toggleCheckAll(this)"></th>
+              <th>Name</th><th>Email</th><th>Phone</th><th>Age</th>
+              <th>Level</th><th>Schedule</th><th>Status</th><th>Date</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="main-tbody"></tbody>
+        </table>
+      </div>
+      <div class="pagination">
+        <div class="pag-info" id="pag-info">Showing 0–0 of 0</div>
+        <div class="pag-btns" id="pag-btns"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: ANALYTICS ══ -->
+  <div class="page" id="page-analytics">
+    <div class="stats-row">
+      <div class="stat-card sc-amber">
+        <div class="sc-num" id="an-total">0</div>
+        <div class="sc-lbl">Total Registrations</div>
+        <div class="sc-icon">📊</div>
+      </div>
+      <div class="stat-card sc-green">
+        <div class="sc-num" id="an-cr">0%</div>
+        <div class="sc-lbl">Confirmation Rate</div>
+        <div class="sc-icon">🎯</div>
+      </div>
+      <div class="stat-card sc-blue">
+        <div class="sc-num" id="an-top-level">—</div>
+        <div class="sc-lbl">Most Popular Level</div>
+        <div class="sc-icon">🏆</div>
+      </div>
+      <div class="stat-card sc-red">
+        <div class="sc-num" id="an-top-sched">—</div>
+        <div class="sc-lbl">Most Popular Schedule</div>
+        <div class="sc-icon">📅</div>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="chart-card">
+        <div class="chart-title">📊 Level Distribution</div>
+        <div class="level-stats" id="an-level-chart"></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">📅 Schedule Distribution</div>
+        <div class="level-stats" id="an-sched-chart"></div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">📆 Monthly Registration Volume</div>
+      <div class="bar-chart" id="an-bar-chart" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: SOCIAL MEDIA ══ -->
+  <div class="page" id="page-social">
+    <div class="social-grid">
+      <div class="social-card">
+        <div class="sc-top">
+          <div class="sc-platform-icon">📘</div>
+          <div>
+            <div class="sc-platform-name">Facebook</div>
+            <div class="sc-handle">New World Student Center</div>
+          </div>
+        </div>
+        <div class="sc-stats-row">
+          <div class="sc-stat"><div class="sc-stat-num">21,025</div><div class="sc-stat-lbl">Followers</div></div>
+          <div class="sc-stat"><div class="sc-stat-num">4</div><div class="sc-stat-lbl">Following</div></div>
+          <div class="sc-stat"><div class="sc-stat-num">299</div><div class="sc-stat-lbl">Posts</div></div>
+        </div>
+        <div class="sc-footer">
+          <a class="sc-link-btn primary" href="https://www.facebook.com/share/p/1B4P4KrGLY/" target="_blank">📘 Open Facebook →</a>
+          <button class="sc-link-btn" onclick="copyLink('https://www.facebook.com/share/p/1B4P4KrGLY/')">📋 Copy Link</button>
+        </div>
+      </div>
+
+      <div class="social-card">
+        <div class="sc-top">
+          <div class="sc-platform-icon">📷</div>
+          <div>
+            <div class="sc-platform-name">Instagram</div>
+            <div class="sc-handle">@new_worldcenter</div>
+          </div>
+        </div>
+        <div class="sc-stats-row">
+          <div class="sc-stat"><div class="sc-stat-num">—</div><div class="sc-stat-lbl">Followers</div></div>
+          <div class="sc-stat"><div class="sc-stat-num">—</div><div class="sc-stat-lbl">Following</div></div>
+          <div class="sc-stat"><div class="sc-stat-num">—</div><div class="sc-stat-lbl">Posts</div></div>
+        </div>
+        <div class="sc-footer">
+          <a class="sc-link-btn primary" href="https://www.instagram.com/new_worldcenter" target="_blank">📷 Open Instagram →</a>
+          <button class="sc-link-btn" onclick="copyLink('https://www.instagram.com/new_worldcenter')">📋 Copy Link</button>
+        </div>
+      </div>
+
+      <div class="social-card">
+        <div class="sc-top">
+          <div class="sc-platform-icon">💬</div>
+          <div>
+            <div class="sc-platform-name">WhatsApp</div>
+            <div class="sc-handle">+212 697-250096</div>
+          </div>
+        </div>
+        <div class="sc-stats-row">
+          <div class="sc-stat"><div class="sc-stat-num">Direct</div><div class="sc-stat-lbl">Chat</div></div>
+          <div class="sc-stat"><div class="sc-stat-num">24h</div><div class="sc-stat-lbl">Response</div></div>
+          <div class="sc-stat"><div class="sc-stat-num">MA</div><div class="sc-stat-lbl">+212</div></div>
+        </div>
+        <div class="sc-footer">
+          <a class="sc-link-btn primary" href="https://wa.me/212697250096" target="_blank">💬 Open WhatsApp →</a>
+          <button class="sc-link-btn" onclick="copyLink('https://wa.me/212697250096')">📋 Copy</button>
+        </div>
+      </div>
+
+      <div class="social-card">
+        <div class="sc-top">
+          <div class="sc-platform-icon">📞</div>
+          <div>
+            <div class="sc-platform-name">Contact Info</div>
+            <div class="sc-handle">New World Student Center</div>
+          </div>
+        </div>
+        <div class="sc-stats-row">
+          <div class="sc-stat" style="grid-column:1/-1;text-align:left;padding:4px 0;">
+            <div style="font-size:13px;color:var(--mid);line-height:2;">
+              📞 +212 697-250096<br>
+              📞 +212 535-736607<br>
+              ✉️ newworld.student@gmail.com<br>
+              📍 Fès, Maroc
+            </div>
+          </div>
+        </div>
+        <div class="sc-footer">
+          <a class="sc-link-btn primary" href="mailto:newworld.student@gmail.com">✉️ Send Email</a>
+          <a class="sc-link-btn" href="tel:+212697250096">📞 Call</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick post composer -->
+    <div class="table-card" style="padding:24px;">
+      <div class="tc-title" style="margin-bottom:16px;">📢 Quick Message Template</div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Generate a registration confirmation message to send via WhatsApp or email.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="exp-btn" onclick="genTemplate('whatsapp')">💬 WhatsApp Template</button>
+        <button class="exp-btn" onclick="genTemplate('email')">✉️ Email Template</button>
+      </div>
+      <div id="template-out" style="margin-top:16px;display:none;">
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r2);padding:16px;font-size:13px;color:var(--mid);white-space:pre-wrap;line-height:1.7;" id="template-text"></div>
+        <button class="exp-btn" style="margin-top:10px;" onclick="copyTemplate()">📋 Copy Message</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PAGE: SETTINGS ══ -->
+  <div class="page" id="page-settings">
+    <div class="settings-grid">
+      <div class="setting-card">
+        <div class="setting-title">🏫 School Information</div>
+        <div class="setting-row"><div class="setting-label">School Name</div><input class="setting-input" value="New World Student Center"></div>
+        <div class="setting-row"><div class="setting-label">Phone 1</div><input class="setting-input" value="+212 697-250096"></div>
+        <div class="setting-row"><div class="setting-label">Phone 2</div><input class="setting-input" value="+212 535-736607"></div>
+        <div class="setting-row"><div class="setting-label">Email</div><input class="setting-input" value="newworld.student@gmail.com"></div>
+        <div class="setting-row"><div class="setting-label">Location</div><input class="setting-input" value="Fès, Maroc"></div>
+        <button class="save-btn" onclick="showToast('✅','Saved!','School information updated.')">Save Changes</button>
+      </div>
+
+      <div class="setting-card">
+        <div class="setting-title">🌐 Social Media Links</div>
+        <div class="setting-row"><div class="setting-label">Facebook</div><input class="setting-input" value="https://www.facebook.com/share/p/1B4P4KrGLY/"></div>
+        <div class="setting-row"><div class="setting-label">Instagram</div><input class="setting-input" value="https://www.instagram.com/new_worldcenter"></div>
+        <div class="setting-row"><div class="setting-label">WhatsApp</div><input class="setting-input" value="+212697250096"></div>
+        <button class="save-btn" onclick="showToast('✅','Saved!','Social links updated.')">Save Changes</button>
+      </div>
+
+      <div class="setting-card">
+        <div class="setting-title">🔔 Notifications</div>
+        <div class="toggle-row">
+          <div><div class="toggle-lbl">Email on new registration</div><div class="toggle-sub">Receive email when someone enrolls</div></div>
+          <label class="toggle"><input type="checkbox" checked><div class="toggle-slider"></div></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-lbl">WhatsApp notification</div><div class="toggle-sub">Get WhatsApp message for new leads</div></div>
+          <label class="toggle"><input type="checkbox" checked><div class="toggle-slider"></div></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-lbl">Daily summary email</div><div class="toggle-sub">Receive daily stats every morning</div></div>
+          <label class="toggle"><input type="checkbox"><div class="toggle-slider"></div></label>
+        </div>
+        <div class="toggle-row">
+          <div><div class="toggle-lbl">Auto-confirm after contact</div><div class="toggle-sub">Auto-set status to confirmed after reply</div></div>
+          <label class="toggle"><input type="checkbox"><div class="toggle-slider"></div></label>
+        </div>
+        <button class="save-btn" style="margin-top:10px;" onclick="showToast('✅','Saved!','Notification preferences updated.')">Save Preferences</button>
+      </div>
+
+      <div class="setting-card">
+        <div class="setting-title">🔐 Admin Access</div>
+        <div class="setting-row"><div class="setting-label">Admin Email</div><input class="setting-input" value="admin@newworld.ma"></div>
+        <div class="setting-row"><div class="setting-label">Current Password</div><input class="setting-input" type="password" placeholder="••••••••"></div>
+        <div class="setting-row"><div class="setting-label">New Password</div><input class="setting-input" type="password" placeholder="Min. 8 characters"></div>
+        <button class="save-btn" onclick="showToast('✅','Password Updated!','Admin credentials saved.')">Update Password</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: STUDENT DETAIL / EDIT ══ -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-h" id="m-name">Student Name</div>
+    <div class="modal-sub" id="m-date">Registered on …</div>
+    <div class="modal-fields">
+      <div class="mf"><div class="mf-label">Email</div><div class="mf-val" id="m-email">—</div></div>
+      <div class="mf"><div class="mf-label">Phone</div><div class="mf-val" id="m-phone">—</div></div>
+      <div class="mf"><div class="mf-label">Age</div><div class="mf-val" id="m-age">—</div></div>
+      <div class="mf"><div class="mf-label">German Level</div><div class="mf-val" id="m-level">—</div></div>
+      <div class="mf"><div class="mf-label">Preferred Schedule</div><div class="mf-val" id="m-sched">—</div></div>
+      <div class="mf mf-full"><div class="mf-label">Message</div><div class="mf-val" id="m-msg" style="color:var(--mid);font-weight:400;">—</div></div>
+    </div>
+    <div class="modal-divider"></div>
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div style="font-size:13px;font-weight:700;color:var(--muted);">Status:</div>
+      <select class="status-select" id="m-status-sel">
+        <option value="new">🆕 New</option>
+        <option value="contacted">📞 Contacted</option>
+        <option value="confirmed">✅ Confirmed</option>
+        <option value="cancelled">❌ Cancelled</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="ma-btn ma-primary" onclick="saveStatus()">Save Status</button>
+      <a class="ma-btn ma-ghost" id="m-wa-link" href="#" target="_blank" style="text-align:center;display:flex;align-items:center;justify-content:center;">💬 WhatsApp</a>
+      <button class="ma-btn ma-ghost danger" onclick="deleteEntry()">🗑 Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD MODAL -->
+<div class="modal-overlay" id="add-modal" onclick="closeAddModal(event)">
+  <div class="modal" onclick="event.stopPropagation()" style="max-width:520px;">
+    <button class="modal-close" onclick="closeAddModal()">✕</button>
+    <div class="modal-h">Add Student Manually</div>
+    <div class="modal-sub">Enter student details below</div>
+    <div class="modal-fields" style="gap:12px;margin-top:12px;">
+      <div class="mf"><div class="mf-label">Full Name *</div><input class="setting-input" id="a-name" placeholder="Student name" style="width:100%;margin-top:4px;"></div>
+      <div class="mf"><div class="mf-label">Email *</div><input class="setting-input" id="a-email" placeholder="email@example.com" style="width:100%;margin-top:4px;"></div>
+      <div class="mf"><div class="mf-label">Phone *</div><input class="setting-input" id="a-phone" placeholder="+212 6XX..." style="width:100%;margin-top:4px;"></div>
+      <div class="mf"><div class="mf-label">Age</div><input class="setting-input" id="a-age" type="number" placeholder="22" style="width:100%;margin-top:4px;" min="10" max="99"></div>
+      <div class="mf"><div class="mf-label">Level</div>
+        <select class="status-select" id="a-level" style="width:100%;margin-top:4px;">
+          <option value="A1">A1 — Beginner</option><option value="A2">A2 — Elementary</option>
+          <option value="B1">B1 — Intermediate</option><option value="B2">B2 — Upper-Int.</option>
+          <option value="unknown">Unknown</option>
+        </select>
+      </div>
+      <div class="mf"><div class="mf-label">Schedule</div>
+        <select class="status-select" id="a-sched" style="width:100%;margin-top:4px;">
+          <option value="morning">Morning</option><option value="afternoon">Afternoon</option>
+          <option value="evening">Evening</option><option value="weekend">Weekend</option>
+          <option value="flexible">Flexible</option>
+        </select>
+      </div>
+      <div class="mf mf-full"><div class="mf-label">Message</div><input class="setting-input" id="a-msg" placeholder="Optional note" style="width:100%;margin-top:4px;"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="ma-btn ma-primary" onclick="addStudent()">➕ Add Student</button>
+      <button class="ma-btn ma-ghost" onclick="closeAddModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-icon" id="t-icon">✅</div>
+  <div><div class="toast-title" id="t-title"></div><div class="toast-sub" id="t-sub"></div></div>
+</div>
+
+<script>
+/* ════════════════════════════
+   DATA STORE
+════════════════════════════ */
+const SAMPLE = [
+  {id:1,name:'Youssef Benali',email:'youssef@gmail.com',phone:'+212 661-234567',age:23,level:'A1',schedule:'morning',msg:'Je veux commencer le plus tôt possible.',status:'confirmed',date:'2026-04-28'},
+  {id:2,name:'Fatima Zahra Idrissi',email:'fatima.zahra@outlook.com',phone:'+212 655-987654',age:21,level:'B1',schedule:'evening',msg:'Préparation examen Goethe B1.',status:'contacted',date:'2026-05-01'},
+  {id:3,name:'Omar El Hamdani',email:'omar.hamdani@gmail.com',phone:'+212 678-112233',age:27,level:'A2',schedule:'weekend',msg:'',status:'new',date:'2026-05-03'},
+  {id:4,name:'Sara Lakhdar',email:'sara.lakhdar@yahoo.fr',phone:'+212 645-554433',age:19,level:'A1',schedule:'afternoon',msg:'Debutante complète.',status:'confirmed',date:'2026-05-04'},
+  {id:5,name:'Hamid El Azzouzi',email:'hamid.azzouzi@gmail.com',phone:'+212 622-998877',age:32,level:'B2',schedule:'morning',msg:'Préparer Ausbildung en Allemagne.',status:'new',date:'2026-05-05'},
+  {id:6,name:'Nadia Berrada',email:'nadia.berrada@gmail.com',phone:'+212 667-123456',age:24,level:'B1',schedule:'flexible',msg:'',status:'contacted',date:'2026-05-02'},
+  {id:7,name:'Amine Tazi',email:'amine.tazi@hotmail.fr',phone:'+212 633-445566',age:26,level:'A2',schedule:'evening',msg:'Visa allemand - besoin B1.',status:'confirmed',date:'2026-04-30'},
+  {id:8,name:'Amira Farah',email:'amira.farah@gmail.com',phone:'+212 610-778899',age:20,level:'A1',schedule:'morning',msg:'',status:'new',date:'2026-05-05'},
+  {id:9,name:'Said Lakhdar',email:'said.lakhdar@gmail.com',phone:'+212 699-334455',age:29,level:'B2',schedule:'weekend',msg:'Goethe B2 exam in 3 months.',status:'cancelled',date:'2026-04-25'},
+  {id:10,name:'Khadija Moumen',email:'khadija.m@gmail.com',phone:'+212 655-667788',age:22,level:'A2',schedule:'afternoon',msg:'',status:'new',date:'2026-05-06'},
+  {id:11,name:'Rachid Oujda',email:'rachid.oujda@gmail.com',phone:'+212 661-223344',age:31,level:'B1',schedule:'morning',msg:'Travail en Allemagne.',status:'confirmed',date:'2026-04-29'},
+  {id:12,name:'Zineb El Fassi',email:'zineb.fassi@outlook.com',phone:'+212 644-889900',age:18,level:'A1',schedule:'afternoon',msg:'Première fois.',status:'contacted',date:'2026-05-03'},
+];
+
+let registrations = JSON.parse(localStorage.getItem('nwsc_reg') || 'null') || SAMPLE;
+let nextId = Math.max(...registrations.map(r=>r.id))+1;
+let currentFilter = 'all';
+let searchQuery = '';
+let currentPage = 1;
+const PAGE_SIZE = 8;
+let selectedId = null;
+let modalMode = 'view'; // 'view' | 'add'
+
+function save(){localStorage.setItem('nwsc_reg', JSON.stringify(registrations));}
+
+/* ════════════════════════════
+   NAVIGATION
+════════════════════════════ */
+function switchPage(page, el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const titles = {dashboard:'Dashboard',registrations:'Registrations',analytics:'Analytics',social:'Social Media',settings:'Settings'};
+  document.getElementById('page-title').textContent = titles[page]||page;
+  if(page==='dashboard') renderDashboard();
+  if(page==='registrations') renderTable();
+  if(page==='analytics') renderAnalytics();
+}
+
+/* ════════════════════════════
+   SIDEBAR TOGGLE
+════════════════════════════ */
+let sidebarOpen = true;
+function toggleSidebar(){
+  const sb = document.getElementById('sidebar');
+  sidebarOpen = !sidebarOpen;
+  if(window.innerWidth<=900){
+    sb.classList.toggle('open',sidebarOpen);
+  }
+}
+
+/* ════════════════════════════
+   DASHBOARD
+════════════════════════════ */
+function renderDashboard(){
+  const all = registrations;
+  const today = new Date().toISOString().slice(0,10);
+  document.getElementById('st-total').textContent = all.length;
+  document.getElementById('st-confirmed').textContent = all.filter(r=>r.status==='confirmed').length;
+  document.getElementById('st-pending').textContent = all.filter(r=>r.status==='new').length;
+  document.getElementById('st-today').textContent = all.filter(r=>r.date===today).length;
+  document.getElementById('sb-count').textContent = all.filter(r=>r.status==='new').length;
+
+  // Recent 5
+  const rec = [...all].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);
+  document.getElementById('recent-tbody').innerHTML = rec.map(r=>`
+    <tr onclick="openModal(${r.id})" style="cursor:pointer;">
+      <td class="td-name">${esc(r.name)}</td>
+      <td><span class="badge b-${r.level.toLowerCase().replace('-','')}">${esc(r.level)}</span></td>
+      <td>${statusBadge(r.status)}</td>
+    </tr>
+  `).join('');
+
+  // Level chart
+  const levels = ['A1','A2','B1','B2','unknown'];
+  const levelColors = {'A1':'#22C55E','A2':'#F59E0B','B1':'#3B82F6','B2':'#A855F7','unknown':'#9CA3AF'};
+  const total = all.length||1;
+  document.getElementById('level-stats-chart').innerHTML = levels.map(lv=>{
+    const cnt = all.filter(r=>r.level===lv).length;
+    if(!cnt) return '';
+    const pct = Math.round(cnt/total*100);
+    return `<div class="lstat-row">
+      <div class="lstat-label">${lv}</div>
+      <div class="lstat-bar"><div class="lstat-fill" style="width:${pct}%;background:${levelColors[lv]};"></div></div>
+      <div class="lstat-count">${cnt}</div>
+    </div>`;
+  }).join('');
+
+  // Schedule chart
+  const scheds = ['morning','afternoon','evening','weekend','flexible'];
+  const schedColors = {'morning':'#F59E0B','afternoon':'#3B82F6','evening':'#8B5CF6','weekend':'#EC4899','flexible':'#10B981'};
+  document.getElementById('sched-stats-chart').innerHTML = scheds.map(s=>{
+    const cnt = all.filter(r=>r.schedule===s).length;
+    if(!cnt) return '';
+    const pct = Math.round(cnt/total*100);
+    return `<div class="lstat-row">
+      <div class="lstat-label" style="width:70px;font-size:11px;">${s}</div>
+      <div class="lstat-bar"><div class="lstat-fill" style="width:${pct}%;background:${schedColors[s]};"></div></div>
+      <div class="lstat-count">${cnt}</div>
+    </div>`;
+  }).join('');
+
+  // Bar chart by month
+  renderBarChart('bar-chart', all);
+}
+
+function renderBarChart(elId, data){
+  const months = [];
+  for(let i=5;i>=0;i--){
+    const d = new Date();d.setMonth(d.getMonth()-i);
+    months.push({key:d.toISOString().slice(0,7),label:d.toLocaleString('default',{month:'short'})});
+  }
+  const max = Math.max(...months.map(m=>data.filter(r=>r.date.startsWith(m.key)).length),1);
+  document.getElementById(elId).innerHTML = months.map(m=>{
+    const cnt = data.filter(r=>r.date.startsWith(m.key)).length;
+    const pct = Math.round(cnt/max*100);
+    return `<div class="bar-col">
+      <div class="bar-val">${cnt}</div>
+      <div class="bar-fill" style="height:${Math.max(pct,4)}%;background:linear-gradient(180deg,var(--amber-h),var(--red));"></div>
+      <div class="bar-lbl">${m.label}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════════════════════
+   TABLE
+════════════════════════════ */
+function getFiltered(){
+  let data = [...registrations].sort((a,b)=>b.date.localeCompare(a.date));
+  if(currentFilter!=='all') data=data.filter(r=>r.status===currentFilter);
+  if(searchQuery){
+    const q=searchQuery.toLowerCase();
+    data=data.filter(r=>r.name.toLowerCase().includes(q)||r.email.toLowerCase().includes(q)||r.phone.includes(q)||r.level.toLowerCase().includes(q));
+  }
+  return data;
+}
+
+function renderTable(){
+  const data = getFiltered();
+  const start=(currentPage-1)*PAGE_SIZE;
+  const paged=data.slice(start,start+PAGE_SIZE);
+  document.getElementById('reg-count-info').textContent = `${data.length} registration${data.length!==1?'s':''}`;
+  document.getElementById('pag-info').textContent = `Showing ${data.length?start+1:0}–${Math.min(start+PAGE_SIZE,data.length)} of ${data.length}`;
+
+  const tbody = document.getElementById('main-tbody');
+  if(!paged.length){
+    tbody.innerHTML=`<tr><td colspan="10"><div class="empty-state"><div class="empty-icon">📭</div><div class="empty-text">No registrations found</div><div class="empty-sub">Try changing the filter or search query</div></div></td></tr>`;
+  } else {
+    tbody.innerHTML = paged.map(r=>`
+      <tr>
+        <td><input type="checkbox" class="row-cb" data-id="${r.id}"></td>
+        <td class="td-name" style="cursor:pointer;" onclick="openModal(${r.id})">${esc(r.name)}</td>
+        <td class="td-email">${esc(r.email)}</td>
+        <td class="td-phone">${esc(r.phone)}</td>
+        <td>${r.age||'—'}</td>
+        <td><span class="badge b-${r.level.toLowerCase().replace('-','').replace(' ','')}">${esc(r.level)}</span></td>
+        <td><span class="sched-badge">📅 ${esc(r.schedule)}</span></td>
+        <td>${statusBadge(r.status)}</td>
+        <td style="font-size:12px;color:var(--muted);">${r.date}</td>
+        <td>
+          <div class="row-actions">
+            <button class="ra-btn" onclick="openModal(${r.id})">👁 View</button>
+            <a class="ra-btn" href="https://wa.me/${r.phone.replace(/[\s\-\(\)+]/g,'')}" target="_blank">💬</a>
+            <button class="ra-btn danger" onclick="deleteRow(${r.id},event)">🗑</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  // Pagination
+  const totalPages=Math.ceil(data.length/PAGE_SIZE);
+  const pagBtns=document.getElementById('pag-btns');
+  pagBtns.innerHTML='';
+  if(currentPage>1){const b=document.createElement('button');b.className='pag-btn';b.textContent='← Prev';b.onclick=()=>{currentPage--;renderTable();};pagBtns.appendChild(b);}
+  for(let i=1;i<=totalPages;i++){
+    const b=document.createElement('button');b.className='pag-btn'+(i===currentPage?' active':'');b.textContent=i;const ii=i;b.onclick=()=>{currentPage=ii;renderTable();};pagBtns.appendChild(b);
+  }
+  if(currentPage<totalPages){const b=document.createElement('button');b.className='pag-btn';b.textContent='Next →';b.onclick=()=>{currentPage++;renderTable();};pagBtns.appendChild(b);}
+}
+
+function setFilter(f,el){
+  currentFilter=f;currentPage=1;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.filter===f));
+  renderTable();
+}
+function filterTable(q){searchQuery=q;currentPage=1;renderTable();}
+function handleGlobalSearch(q){
+  searchQuery=q;currentPage=1;
+  if(q.length>0) switchPage('registrations',document.querySelectorAll('.sb-item')[1]);
+  renderTable();
+}
+function toggleCheckAll(cb){document.querySelectorAll('.row-cb').forEach(c=>c.checked=cb.checked);}
+
+/* ════════════════════════════
+   MODAL
+════════════════════════════ */
+function openModal(id){
+  const r = registrations.find(x=>x.id===id);
+  if(!r)return;
+  selectedId=id;
+  document.getElementById('m-name').textContent=r.name;
+  document.getElementById('m-date').textContent='Registered on '+r.date;
+  document.getElementById('m-email').textContent=r.email;
+  document.getElementById('m-phone').textContent=r.phone;
+  document.getElementById('m-age').textContent=r.age||'—';
+  document.getElementById('m-level').textContent=r.level;
+  document.getElementById('m-sched').textContent=r.schedule;
+  document.getElementById('m-msg').textContent=r.msg||'—';
+  document.getElementById('m-status-sel').value=r.status;
+  document.getElementById('m-wa-link').href=`https://wa.me/${r.phone.replace(/[\s\-\(\)+]/g,'')}`;
+  document.getElementById('modal').classList.add('open');
+}
+function closeModal(e){
+  if(!e||e.target===document.getElementById('modal'))
+    document.getElementById('modal').classList.remove('open');
+}
+function saveStatus(){
+  const r=registrations.find(x=>x.id===selectedId);
+  if(!r)return;
+  r.status=document.getElementById('m-status-sel').value;
+  save();renderTable();renderDashboard();
+  document.getElementById('modal').classList.remove('open');
+  showToast('✅','Status Updated','Student status saved successfully.');
+}
+function deleteEntry(){
+  if(!confirm('Delete this registration?'))return;
+  registrations=registrations.filter(x=>x.id!==selectedId);
+  save();renderTable();renderDashboard();
+  document.getElementById('modal').classList.remove('open');
+  showToast('🗑','Deleted','Registration removed.');
+}
+function deleteRow(id,e){
+  e.stopPropagation();
+  if(!confirm('Delete this registration?'))return;
+  registrations=registrations.filter(x=>x.id!==id);
+  save();renderTable();renderDashboard();
+  showToast('🗑','Deleted','Registration removed.');
+}
+
+/* ════════════════════════════
+   ADD STUDENT
+════════════════════════════ */
+function showAddModal(){document.getElementById('add-modal').classList.add('open');}
+function closeAddModal(e){
+  if(!e||e.target===document.getElementById('add-modal'))
+    document.getElementById('add-modal').classList.remove('open');
+}
+function addStudent(){
+  const name=esc(document.getElementById('a-name').value.trim());
+  const email=document.getElementById('a-email').value.trim();
+  const phone=document.getElementById('a-phone').value.trim();
+  if(!name||!email||!phone){showToast('⚠️','Missing Fields','Please fill Name, Email and Phone.');return;}
+  const r={
+    id:nextId++,name,email,phone,
+    age:parseInt(document.getElementById('a-age').value)||null,
+    level:document.getElementById('a-level').value,
+    schedule:document.getElementById('a-sched').value,
+    msg:document.getElementById('a-msg').value.trim(),
+    status:'new',
+    date:new Date().toISOString().slice(0,10)
+  };
+  registrations.unshift(r);save();
+  document.getElementById('add-modal').classList.remove('open');
+  renderTable();renderDashboard();
+  showToast('✅','Student Added!',name+' added to registrations.');
+  ['a-name','a-email','a-phone','a-age','a-msg'].forEach(id=>document.getElementById(id).value='');
+}
+
+/* ════════════════════════════
+   ANALYTICS
+════════════════════════════ */
+function renderAnalytics(){
+  const all=registrations;
+  const total=all.length;
+  const confirmed=all.filter(r=>r.status==='confirmed').length;
+  document.getElementById('an-total').textContent=total;
+  document.getElementById('an-cr').textContent=total?Math.round(confirmed/total*100)+'%':'0%';
+  // Top level
+  const lv=['A1','A2','B1','B2','unknown'];
+  const topLv=lv.reduce((a,b)=>all.filter(r=>r.level===a).length>=all.filter(r=>r.level===b).length?a:b);
+  document.getElementById('an-top-level').textContent=topLv;
+  // Top schedule
+  const sc=['morning','afternoon','evening','weekend','flexible'];
+  const topSc=sc.reduce((a,b)=>all.filter(r=>r.schedule===a).length>=all.filter(r=>r.schedule===b).length?a:b);
+  document.getElementById('an-top-sched').textContent=topSc;
+
+  const levelColors={'A1':'#22C55E','A2':'#F59E0B','B1':'#3B82F6','B2':'#A855F7','unknown':'#9CA3AF'};
+  const t=total||1;
+  document.getElementById('an-level-chart').innerHTML=lv.map(l=>{
+    const c=all.filter(r=>r.level===l).length;if(!c)return'';
+    return `<div class="lstat-row"><div class="lstat-label">${l}</div><div class="lstat-bar"><div class="lstat-fill" style="width:${Math.round(c/t*100)}%;background:${levelColors[l]};"></div></div><div class="lstat-count">${c}</div></div>`;
+  }).join('');
+
+  const schedColors={'morning':'#F59E0B','afternoon':'#3B82F6','evening':'#8B5CF6','weekend':'#EC4899','flexible':'#10B981'};
+  document.getElementById('an-sched-chart').innerHTML=sc.map(s=>{
+    const c=all.filter(r=>r.schedule===s).length;if(!c)return'';
+    return `<div class="lstat-row"><div class="lstat-label" style="width:70px;font-size:11px;">${s}</div><div class="lstat-bar"><div class="lstat-fill" style="width:${Math.round(c/t*100)}%;background:${schedColors[s]};"></div></div><div class="lstat-count">${c}</div></div>`;
+  }).join('');
+
+  renderBarChart('an-bar-chart',all);
+}
+
+/* ════════════════════════════
+   EXPORT
+════════════════════════════ */
+function exportCSV(){
+  const headers=['ID','Name','Email','Phone','Age','Level','Schedule','Status','Date','Message'];
+  const rows=registrations.map(r=>[r.id,r.name,r.email,r.phone,r.age||'',r.level,r.schedule,r.status,r.date,(r.msg||'').replace(/,/g,' ')]);
+  const csv=[headers,...rows].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  download('nwsc-registrations.csv','text/csv',csv);
+  showToast('⬇️','CSV Exported',registrations.length+' records exported.');
+}
+function exportJSON(){
+  download('nwsc-registrations.json','application/json',JSON.stringify(registrations,null,2));
+  showToast('⬇️','JSON Exported','Data exported as JSON.');
+}
+function download(filename,type,content){
+  const a=document.createElement('a');
+  a.href='data:'+type+';charset=utf-8,'+encodeURIComponent(content);
+  a.download=filename;a.click();
+}
+function printTable(){window.print();}
+
+/* ════════════════════════════
+   TEMPLATE GENERATOR
+════════════════════════════ */
+function genTemplate(type){
+  const latest=registrations.filter(r=>r.status==='new')[0]||registrations[0];
+  let txt='';
+  if(type==='whatsapp'){
+    txt=`Bonjour ${latest?.name||'[Nom]'} 👋\n\nMerci pour votre inscription à *New World Student Center* ! 🇩🇪\n\nNous avons bien reçu votre demande pour le niveau *${latest?.level||'A1'}* (créneau : ${latest?.schedule||'matin'}).\n\nNous vous confirmerons votre place dans les plus brefs délais. Pour toute question :\n📞 +212 697-250096\n\nKordte Grüße — L'équipe New World 🎓`;
+  } else {
+    txt=`Objet : Confirmation d'inscription — New World Student Center\n\nBonjour ${latest?.name||'[Nom]'},\n\nNous avons bien reçu votre demande d'inscription pour le niveau ${latest?.level||'A1'} (créneau préféré : ${latest?.schedule||'matin'}).\n\nNotre équipe vous contactera dans les 24 heures pour confirmer votre place et vous communiquer les détails pratiques.\n\nCordialement,\nL'équipe New World Student Center\n📞 +212 697-250096\n✉️ newworld.student@gmail.com`;
+  }
+  document.getElementById('template-text').textContent=txt;
+  document.getElementById('template-out').style.display='block';
+}
+function copyTemplate(){
+  navigator.clipboard.writeText(document.getElementById('template-text').textContent);
+  showToast('📋','Copied!','Message copied to clipboard.');
+}
+function copyLink(url){
+  navigator.clipboard.writeText(url);
+  showToast('📋','Link Copied!','URL copied to clipboard.');
+}
+
+/* ════════════════════════════
+   HELPERS
+════════════════════════════ */
+function esc(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+
+function statusBadge(s){
+  const map={
+    new:`<span class="status-badge s-new"><span class="s-dot"></span>New</span>`,
+    contacted:`<span class="status-badge s-contacted"><span class="s-dot"></span>Contacted</span>`,
+    confirmed:`<span class="status-badge s-confirmed"><span class="s-dot"></span>Confirmed</span>`,
+    cancelled:`<span class="status-badge s-cancelled"><span class="s-dot"></span>Cancelled</span>`,
+  };
+  return map[s]||`<span class="status-badge">${esc(s)}</span>`;
+}
+
+function showToast(icon,title,sub){
+  document.getElementById('t-icon').textContent=icon;
+  document.getElementById('t-title').textContent=title;
+  document.getElementById('t-sub').textContent=sub;
+  const t=document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+/* ════════════════════════════
+   AUTH / LOGIN
+════════════════════════════ */
+const AUTH = {
+  // Credentials (in real app: validate server-side with Supabase Auth)
+  users: [
+    { email: 'admin@newworld.ma', password: 'nwsc2026', role: 'admin' },
+    { email: 'newworld.student@gmail.com', password: 'nwsc2026', role: 'admin' },
+  ],
+  maxAttempts: 5,
+  lockoutSeconds: 30,
+  sessionKey: 'nwsc_session',
+};
+
+let loginAttempts = parseInt(sessionStorage.getItem('nwsc_attempts') || '0');
+let lockedUntil = parseInt(sessionStorage.getItem('nwsc_locked') || '0');
+
+function checkSession() {
+  const sess = sessionStorage.getItem(AUTH.sessionKey);
+  if (sess) {
+    try {
+      const data = JSON.parse(sess);
+      if (data.exp > Date.now()) {
+        grantAccess(data.email, false);
+        return true;
+      }
+    } catch(e) {}
+    sessionStorage.removeItem(AUTH.sessionKey);
+  }
+  return false;
+}
+
+function doLogin() {
+  // Check lockout
+  if (Date.now() < lockedUntil) {
+    showLockout(); return;
+  }
+
+  const emailEl = document.getElementById('l-email');
+  const passEl  = document.getElementById('l-pass');
+  const email   = emailEl.value.trim().toLowerCase();
+  const pass    = passEl.value;
+  const btn     = document.getElementById('l-btn');
+  const btnTxt  = document.getElementById('l-btn-text');
+
+  if (!email || !pass) {
+    showLoginErr('Please fill in both fields.');
+    [emailEl, passEl].forEach(el => { if (!el.value.trim()) el.classList.add('shake'); setTimeout(() => el.classList.remove('shake'), 400); });
+    return;
+  }
+
+  // Loading state
+  btn.disabled = true;
+  btnTxt.innerHTML = '<span style="display:inline-block;animation:sp .7s linear infinite">⏳</span> Signing in…';
+
+  setTimeout(() => {
+    const user = AUTH.users.find(u => u.email === email && u.password === pass);
+    if (user) {
+      // Success
+      loginAttempts = 0;
+      sessionStorage.setItem('nwsc_attempts', '0');
+      sessionStorage.removeItem('nwsc_locked');
+      // Save session for 8 hours
+      sessionStorage.setItem(AUTH.sessionKey, JSON.stringify({ email: user.email, role: user.role, exp: Date.now() + 8*3600*1000 }));
+      grantAccess(user.email, true);
+    } else {
+      // Failed
+      loginAttempts++;
+      sessionStorage.setItem('nwsc_attempts', loginAttempts);
+      if (loginAttempts >= AUTH.maxAttempts) {
+        lockedUntil = Date.now() + AUTH.lockoutSeconds * 1000;
+        sessionStorage.setItem('nwsc_locked', lockedUntil);
+        showLockout();
+      } else {
+        const remaining = AUTH.maxAttempts - loginAttempts;
+        showLoginErr(`Incorrect credentials. ${remaining} attempt${remaining!==1?'s':''} remaining.`);
+        passEl.value = '';
+        passEl.focus();
+        passEl.classList.add('shake');
+        setTimeout(() => passEl.classList.remove('shake'), 400);
+        document.getElementById('l-attempts').textContent = remaining > 0 ? `${loginAttempts}/${AUTH.maxAttempts} failed attempts` : '';
+      }
+      btn.disabled = false;
+      btnTxt.textContent = '🔐 Sign In';
+    }
+  }, 700);
+}
+
+function showLoginErr(msg) {
+  const err = document.getElementById('l-err');
+  err.textContent = msg;
+  err.classList.add('show');
+  setTimeout(() => err.classList.remove('show'), 4000);
+  document.getElementById('l-btn').disabled = false;
+  document.getElementById('l-btn-text').textContent = '🔐 Sign In';
+}
+
+function showLockout() {
+  document.getElementById('l-lockout').classList.add('show');
+  document.getElementById('l-err').classList.remove('show');
+  document.getElementById('l-btn').disabled = true;
+  document.getElementById('l-btn-text').textContent = '🔒 Locked out';
+  const interval = setInterval(() => {
+    const remaining = Math.ceil((lockedUntil - Date.now()) / 1000);
+    if (remaining <= 0) {
+      clearInterval(interval);
+      loginAttempts = 0;
+      sessionStorage.setItem('nwsc_attempts', '0');
+      sessionStorage.removeItem('nwsc_locked');
+      document.getElementById('l-lockout').classList.remove('show');
+      document.getElementById('l-btn').disabled = false;
+      document.getElementById('l-btn-text').textContent = '🔐 Sign In';
+      document.getElementById('l-attempts').textContent = '';
+    } else {
+      document.getElementById('l-timer').textContent = remaining;
+    }
+  }, 1000);
+  // Start timer display immediately
+  document.getElementById('l-timer').textContent = Math.ceil((lockedUntil - Date.now()) / 1000);
+}
+
+function grantAccess(email, animated) {
+  document.body.classList.remove('locked');
+  document.body.classList.add('logged-in');
+  // Update avatar / name in topbar
+  const initials = email.split('@')[0].slice(0,2).toUpperCase();
+  document.querySelector('.avatar').textContent = initials;
+  // Update logout button
+  document.querySelector('.avatar').title = email + ' · Click to logout';
+  document.querySelector('.avatar').onclick = doLogout;
+  if (animated) {
+    showToast('✅', 'Welcome!', 'Signed in as ' + email);
+  }
+  renderDashboard();
+  renderTable();
+}
+
+function doLogout() {
+  if (!confirm('Sign out of the admin panel?')) return;
+  sessionStorage.removeItem(AUTH.sessionKey);
+  document.body.classList.add('locked');
+  document.body.classList.remove('logged-in');
+  document.getElementById('l-pass').value = '';
+  document.getElementById('l-attempts').textContent = '';
+  document.getElementById('l-err').classList.remove('show');
+  document.getElementById('l-lockout').classList.remove('show');
+  document.getElementById('l-btn').disabled = false;
+  document.getElementById('l-btn-text').textContent = '🔐 Sign In';
+}
+
+function togglePw() {
+  const inp = document.getElementById('l-pass');
+  const btn = document.getElementById('pw-eye-btn');
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+  else { inp.type = 'password'; btn.textContent = '👁'; }
+}
+
+/* ════════════════════════════
+   INIT
+════════════════════════════ */
+// Check if locked out on load
+if (Date.now() < lockedUntil) {
+  showLockout();
+}
+// Try restore session
+if (!checkSession()) {
+  // stay on login screen
+  setTimeout(() => document.getElementById('l-email').focus(), 100);
+} else {
+  renderDashboard();
+  renderTable();
+}
+</script>
+</body>
+</html>
